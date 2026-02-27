@@ -96,7 +96,7 @@ The full loop: interview, compile, plan, implement, review, with the spec evolvi
 
 ### `/intent-interview`
 
-Just the interview and spec compilation. No build lifecycle. Good when you want to think through a project before committing to building it, or when you plan to build manually.
+Just the interview and spec compilation. No build lifecycle. Good when you want to think through a project before committing to building it, or when you plan to build manually. When you're ready to build, run `/intent` — it will pick up the existing spec and run the lifecycle.
 
 ## Intent Spec Format
 
