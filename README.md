@@ -46,7 +46,7 @@ Now you've made the decisions, not the agent. Scope, boundaries, context, accept
 ## Getting Started
 
 ```bash
-pip install apo
+pip install apo-cli
 ```
 
 Then, in your Claude Code project:
