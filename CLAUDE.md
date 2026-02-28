@@ -1,6 +1,6 @@
 # Apo
 
-Intent spec compiler for human-AI collaboration. Six primitives (WANT, DON'T, LIKE, FOR, ENSURE, TRUST) that close the gap between what people say and what they mean.
+Proof of concept for intent-driven communication with LLMs. Six primitives (WANT, DON'T, LIKE, FOR, ENSURE, TRUST) that close the gap between what people say and what they mean. The tool is a prototyping aid for solo developers working with Claude Code — not a production workflow system.
 
 ## Project Structure
 

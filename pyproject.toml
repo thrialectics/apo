@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "apo-cli"
-version = "0.1.0"
-description = "Turn conversations into contracts. Intent spec compiler for human-AI collaboration."
+version = "0.1.1"
+description = "Proof of concept for intent-driven communication with LLMs. Six primitives that close the gap between what people say and what they mean."
 requires-python = ">=3.11"
 license = {text = "MIT"}
 keywords = ["intent", "specification", "llm", "ai", "collaboration"]

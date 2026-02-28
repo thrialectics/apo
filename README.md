@@ -1,20 +1,22 @@
 # Apo
 
-**Turn conversations into contracts.**
+**A proof of concept for intent-driven communication with LLMs.**
 
-When you ask an AI to build something, it captures about half of what you actually mean. The rest (boundaries you assumed were obvious, quality bars, what the AI should decide vs. ask about) stays in your head. The agent fills those gaps with its own judgment, and you lose control of the outcome without realizing it.
+When you ask an AI to build something, it captures about half of what you actually mean. The rest — boundaries you assumed were obvious, quality bars, what the AI should decide vs. ask about — stays in your head. The agent fills those gaps with its own judgment, and you lose control of the outcome without realizing it.
 
-Apo is a structured interview that pulls out those missing pieces before the agent starts working. You decide the scope, the boundaries, and the delegation rules. The agent builds what you meant, not what it assumed. In research, using apo's six intention primitives raised intent recall from 51% to 91%.
+Apo explores a simple idea: what if you structured your intent *before* the agent started working? Six primitives (WANT, DON'T, LIKE, FOR, ENSURE, TRUST) that capture the dimensions people consistently forget to specify. In research, using all six raised intent recall from 51% to 91%.
+
+**This is a prototyping tool, not a production workflow system.** Apo is designed for solo developers and quick builds — the kind of work where you're talking to Claude Code and want to get something right on the first pass. It's not built for engineering teams, CI/CD pipelines, or enterprise workflows. The contribution is the framework (the six primitives and how they interact); the CLI is a working prototype that demonstrates it.
 
 ## Before / After
 
-**Without Apo**, a typical user's first prompt:
+**Without structured intent**, a typical prompt:
 
 > "Build me an expense tracker with categories"
 
 The agent fills in the blanks with its own preferences. It picks a database, an auth system, an API shape. You get something that works, but the agent made the design decisions, not you.
 
-**With Apo**, you get a structured intent primitive spec. Example:
+**With Apo**, you think through the full picture first:
 
 ```markdown
 ## WANT
@@ -41,7 +43,7 @@ The agent fills in the blanks with its own preferences. It picks a database, an 
 - [ask] Modifying the public API signature
 ```
 
-Now you've made the decisions, not the agent. Scope, boundaries, context, acceptance criteria, and delegation rules are all yours. The spec isn't a one-shot artifact either; it updates as the project evolves, but only with changes you can see and approve.
+Now you've made the decisions, not the agent. Scope, boundaries, context, acceptance criteria, and delegation rules are all explicit before a single line of code gets written.
 
 ## Getting Started
 
@@ -52,10 +54,9 @@ pipx install apo-cli
 Then, in your Claude Code project:
 
 1. Ask Claude to run `apo init`. This sets up `docs/intents/` and installs the skills.
-2. Talk to Claude about how Apo fits your workflow.
-3. When you have a project you want to build, use `/intent` to start your first spec. Claude walks you through the six categories, compiles a structured spec, and can run the full build lifecycle from there.
+2. When you have something you want to prototype, use `/intent` to start. Claude walks you through the six primitives, compiles a spec, and can run the build from there.
 
-Apo works through conversation. The CLI commands below are there for power users and automation, but most users will just talk to Claude.
+Apo works through conversation. The CLI commands below are there if you want direct access, but most of the time you'll just talk to Claude.
 
 ## The Six Primitives
 
@@ -72,7 +73,7 @@ DON'T and TRUST are the ones people skip most, and they're the ones that matter 
 
 ## How It Works
 
-Specs aren't static. They update as the project moves forward:
+The spec isn't a one-shot document. It updates as you learn more during the build:
 
 ```
 interview → compile → plan → implement → review
@@ -80,23 +81,23 @@ interview → compile → plan → implement → review
                └──── evolve ←─────────────────┘
 ```
 
-1. **Interview** — Claude asks about each primitive, adapting to what you've already covered.
-2. **Compile** — Answers become a versioned spec with YAML frontmatter.
-3. **Plan** — The spec drives planning. Anything learned feeds back via `apo evolve`.
-4. **Implement** — Build against the spec. New constraints and test cases get folded in.
-5. **Review** — Check the implementation against ENSURE criteria, DON'T boundaries, and TRUST rules.
+1. **Interview** — Claude asks about each primitive, adapting to what you've already said.
+2. **Compile** — Your answers become a structured spec.
+3. **Plan** — The spec drives planning. Anything discovered feeds back via `apo evolve`.
+4. **Implement** — Build against the spec. New constraints get folded in.
+5. **Review** — Check the result against ENSURE criteria, DON'T boundaries, and TRUST rules.
 
-`apo evolve` handles the merging at each boundary. It preserves your edits, only touches relevant sections, and bumps the version.
+`apo evolve` merges discoveries back into the spec at each step — preserving your edits, only touching relevant sections.
 
 ## Claude Code Skills
 
 ### `/intent`
 
-The full loop: interview, compile, plan, implement, review, with the spec evolving along the way. Use this when you're starting something new.
+The full loop: interview, compile, plan, implement, review. Use this when you're starting a new prototype.
 
 ### `/intent-interview`
 
-Just the interview and spec compilation. No build lifecycle. Good when you want to think through a project before committing to building it, or when you plan to build manually. When you're ready to build, run `/intent` — it will pick up the existing spec and run the lifecycle.
+Just the interview and spec compilation — no build. Good when you want to think through something before committing to building it.
 
 ## Intent Spec Format
 
