@@ -1,5 +1,6 @@
 ---
 name: intent-interview
+user-invocable: true
 description: >
   Walk the user through the six intention primitives (WANT, DON'T, LIKE, FOR, ENSURE, TRUST)
   and compile the result into a structured intent spec via the Apo CLI. Focused on the
@@ -75,6 +76,21 @@ Adapt to what's natural:
 - Probe deeper on rich answers: "You mentioned sorting — newest-first or oldest-first?"
 - **Never fabricate answers.** If they skip a primitive, it stays empty.
 
+### Probing Deeper
+
+Before diving deep, read the room. If the user signals they want speed ("quick prototype", "just the basics", "let's keep it light"), do a single pass through the primitives with minimal follow-ups. You can always come back: "This is enough to start — we can deepen the spec after you've seen a prototype."
+
+For full sessions, don't move on after a single answer. Use targeted follow-ups per primitive:
+
+- **WANT:** "Walk me through a step-by-step interaction." "Any secondary features?" "What's MVP vs. full vision?"
+- **FOR:** "What tech stack / platform?" "Where does this deploy?" "Expected scale?" "Any integrations?"
+- **DON'T:** "Any technologies to avoid?" "Complexity ceiling?" "Hard scope boundaries?"
+- **LIKE:** "What specifically appeals — the UX, the architecture, the visual style?" "Any anti-inspirations (things it should NOT feel like)?"
+- **ENSURE:** "Walk me through a demo — what do you show?" "What are the error cases?" "How would you personally verify it works?"
+- **TRUST:** "Any constraints on the autonomous items?" "For the ask items — how deep should confirmation go?"
+
+Probe until you have a vivid picture of what success looks like. One-word answers deserve a follow-up.
+
 ### When to Stop
 
 - All six addressed (even if some are "nothing")
@@ -85,19 +101,45 @@ Adapt to what's natural:
 
 ## Phase 3: Compile the Spec
 
-Once the interview is complete:
+Once the interview is complete, write the spec directly — you already have all the answers.
 
-1. **Compile via CLI** — Write the assembled prose from the interview to a temp file, then compile:
+### Spec Format
 
-   ```bash
-   # Write interview prose to temp file
-   Write /tmp/apo-prose.txt with the assembled prose (all six primitives as natural text)
+Write a markdown file with this structure:
 
-   # Compile into structured spec
-   apo compile /tmp/apo-prose.txt --output docs/intents/<slug>.md --title "<project name>" --author "human:<user name if known>"
-   ```
+```markdown
+---
+title: "<project name>"
+author: "human:<user name if known>"
+version: 1
+created: <YYYY-MM-DD>
+---
 
-   The compiler template handles structuring the output into the proper spec format with YAML frontmatter.
+# <Project Name>
+
+## WANT
+<what should exist — features, behaviors, outcomes>
+
+## DON'T
+<boundaries, scope limits, what it must NOT do>
+
+## LIKE
+<inspirations — references only, no descriptions>
+
+## FOR
+<audience, environment, domain, tech stack>
+
+## ENSURE
+<acceptance criteria — each one testable>
+
+## TRUST
+<what Claude decides autonomously vs. what needs human approval>
+<tag each item: [autonomous] or [ask]>
+```
+
+### Steps
+
+1. **Write the spec** — Compile the interview answers into the format above. Write to `docs/intents/<slug>.md` (slugify the title, create `docs/intents/` if needed).
 
 2. **Present for review** — Show the compiled spec to the user:
 
@@ -105,10 +147,7 @@ Once the interview is complete:
 
 3. **Handle edits** — If the user wants changes, update and re-present.
 
-4. **Save the spec** — Once approved, write to `docs/intents/<name>.md`:
-   - Slugify the title for the filename
-   - Create `docs/intents/` if it doesn't exist
-   - Confirm the save location with the user
+4. **Save the spec** — Once approved, confirm the final save location with the user.
 
 ---
 

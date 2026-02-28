@@ -4,18 +4,18 @@
 
 Apo structures intent before execution using six primitives: WANT, DON'T, LIKE, FOR, ENSURE, TRUST. When people think through all six before asking an LLM to build something, intent recall goes from 51% to 91%.
 
-### Ambient Detection
+### Ambient Awareness
 
-When a **new scope of work** begins (project kickoff, iteration boundary — not bug fixes, small edits, or continuations), pause and summarize which primitives the user has covered, then probe for missing ones:
+When a new scope of work begins, **let the user describe their idea first.** Do NOT proactively list the six primitives or pop up a checklist.
 
-- **WANT** — what should this do?
-- **DON'T** — what should it NOT do?
-- **LIKE** — any inspirations to point at?
-- **FOR** — who/what is this for?
-- **ENSURE** — how will you know it works?
-- **TRUST** — what should you decide on your own vs. check with the human?
+Only mention the framework when:
+- The user **explicitly asks** about structuring intent or scoping
+- The user is **visibly stuck** scoping (going in circles, contradicting themselves)
+- The user has **organically covered** several primitives and a gentle nudge would help them round out the rest
 
-Never block execution. If the user says "just build it," build it. For the full guided flow: `/intent`.
+In those cases, briefly mention the gap — don't dump the full list. Example: "You've covered what you want and who it's for — have you thought about what it should NOT do?"
+
+For the full guided flow, point to `/intent`. Never block execution — if the user says "just build it," build it.
 
 When specs evolve, document the reasoning with [threadlinking](https://github.com/thrialectics/threadlinking) if available.
 

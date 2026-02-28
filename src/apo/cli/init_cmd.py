@@ -3,6 +3,7 @@
 import importlib.resources
 import os
 import shutil
+import sys
 from pathlib import Path
 
 import click
@@ -51,8 +52,19 @@ def init_cmd(status: bool, no_interactive: bool, skip_skills: bool) -> None:
     _run_init(no_interactive=no_interactive, skip_skills=skip_skills)
 
 
+def _stdin_is_interactive() -> bool:
+    """Check if stdin is attached to a TTY."""
+    try:
+        return sys.stdin.isatty()
+    except AttributeError:
+        return False
+
+
 def _run_init(*, no_interactive: bool, skip_skills: bool) -> None:
     """Run the init setup."""
+    if not _stdin_is_interactive():
+        no_interactive = True
+
     click.echo("Setting up Apo...", err=True)
     click.echo("", err=True)
 

@@ -9,6 +9,19 @@ from click.testing import CliRunner
 from apo.cli.init_cmd import SKILLS, init_cmd
 
 
+@pytest.fixture(autouse=True)
+def simulate_tty(monkeypatch):
+    """Tests simulate a TTY environment by default.
+
+    The TTY detection in _run_init() calls _stdin_is_interactive(). Since
+    the test runner may not have a real TTY, we patch it so interactive tests
+    work correctly. The TTY-specific test overrides this.
+    """
+    monkeypatch.setattr(
+        "apo.cli.init_cmd._stdin_is_interactive", lambda: True
+    )
+
+
 @pytest.fixture
 def runner():
     return CliRunner()
@@ -328,3 +341,22 @@ class TestClaudeMd:
         apo_idx = content.index("<!-- apo:start")
         after_idx = content.index("# After")
         assert before_idx < apo_idx < after_idx
+
+
+class TestTTYDetection:
+    def test_non_tty_stdin_forces_no_interactive(
+        self, runner, isolated_fs, fake_home, monkeypatch
+    ):
+        """Non-TTY stdin forces no_interactive=True, completing without hanging."""
+        monkeypatch.setattr(
+            "apo.cli.init_cmd._stdin_is_interactive", lambda: False
+        )
+
+        # Run without --no-interactive; TTY detection should force it
+        result = runner.invoke(init_cmd, [])
+        assert result.exit_code == 0
+        assert "Setting up Apo..." in result.output
+
+        # Skills should be installed (no prompt, auto-accepted)
+        for skill_name in SKILLS:
+            assert _skill_path(fake_home, skill_name).exists()
