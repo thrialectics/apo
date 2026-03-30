@@ -4,7 +4,7 @@
 
 Agentic coding involves communicating with an LLM in natural language, leading to conversational drift. Increasingly, this drift also involves turning agency in ideation and decisionmaking over to the coding agents. 
 
-Apo explores a simple idea: what if you structured your intent *before* the agent started working in the codebase? Drawing from speech act theory, apo uses six "intention primitives" (WANT, DON'T, LIKE, FOR, ENSURE, TRUST) that capture the dimensions people need to specify so an LLM can capture their intent. In research, using all six raised intent recall during coding tasks from 51% to 91%.
+Apo explores a simple idea: what if you structured your intent *before* the agent started working in the codebase? Drawing from speech act theory, apo uses six "intention primitives" (WANT, DON'T, LIKE, FOR, ENSURE, TRUST) that capture the dimensions people need to specify so an LLM can capture their intent.
 
 **This is a prototyping tool, not a production workflow system.** The apo tool here is currently a proof of concept, designed for solo developers and quick builds — the kind of work where you're talking to Claude Code and want to get something right on the first pass. It's not (yet) built for engineering teams, CI/CD pipelines, or enterprise workflows. The contribution is the framework (the six primitives and how they interact).
 
